@@ -1,0 +1,8 @@
+.form-pattern__inp {
+  outline: none;
+  color: #FFF;
+  background-color: #000;
+  margin-top: 30px;
+  border: none;
+  border-bottom: 2px solid #ccc;
+}

@@ -1,0 +1,11 @@
+.header__user-email {
+  margin: 8px 24px 0 0;
+  font-family: inter;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  text-decoration: none;
+}
+.header__user-email:visited {
+  color: #FFFFFF;
+}

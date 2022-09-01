@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/mesto-react/static/css/main.d0fc3d7c.css",
+    "main.js": "/mesto-react/static/js/main.ddca90ce.js",
+    "static/js/787.5530211c.chunk.js": "/mesto-react/static/js/787.5530211c.chunk.js",
+    "static/media/Inter-Medium.woff": "/mesto-react/static/media/Inter-Medium.9053572c46aeb4b16caa.woff",
+    "static/media/Inter-Black.woff": "/mesto-react/static/media/Inter-Black.c6938660eec019fefd68.woff",
+    "static/media/Inter-Regular.woff": "/mesto-react/static/media/Inter-Regular.8c206db99195777c6769.woff",
+    "static/media/Inter-Medium.woff2": "/mesto-react/static/media/Inter-Medium.293fd13dbca5a3e450ef.woff2",
+    "static/media/Inter-Black.woff2": "/mesto-react/static/media/Inter-Black.15ca31c0a2a68f76d2d1.woff2",
+    "static/media/Inter-Regular.woff2": "/mesto-react/static/media/Inter-Regular.c8ba52b05a9ef10f4758.woff2",
+    "static/media/Logo.svg": "/mesto-react/static/media/Logo.d286ae955595b093987bd4fae51bf398.svg",
+    "static/media/Heart.svg": "/mesto-react/static/media/Heart.a826148813c6daed73b0.svg",
+    "index.html": "/mesto-react/index.html",
+    "static/media/Error.svg": "/mesto-react/static/media/Error.d4ce2a261b68c6da973d51ef98afae1a.svg",
+    "static/media/Trash.svg": "/mesto-react/static/media/Trash.ce3b64935accf9b8212e.svg",
+    "static/media/Success.svg": "/mesto-react/static/media/Success.a9eb6caf1da3ff48b215fb1dd9477d74.svg",
+    "static/media/Heart_activ.svg": "/mesto-react/static/media/Heart_activ.dd6a61e81552be95f4b7.svg",
+    "static/media/Pen.svg": "/mesto-react/static/media/Pen.f407b46b715801d7c2ba8ec7d5809323.svg",
+    "static/media/Plus.svg": "/mesto-react/static/media/Plus.628241e529ed899aaa2b95d199b6e824.svg",
+    "main.d0fc3d7c.css.map": "/mesto-react/static/css/main.d0fc3d7c.css.map",
+    "main.ddca90ce.js.map": "/mesto-react/static/js/main.ddca90ce.js.map",
+    "787.5530211c.chunk.js.map": "/mesto-react/static/js/787.5530211c.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d0fc3d7c.css",
+    "static/js/main.ddca90ce.js"
+  ]
+}

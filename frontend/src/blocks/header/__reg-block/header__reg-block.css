@@ -1,0 +1,5 @@
+.header__reg-block {
+  display: flex;
+  justify-content: space-between;
+  height: 22px;
+}
