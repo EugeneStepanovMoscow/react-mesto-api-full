@@ -17,17 +17,17 @@ const userSchema = new mongoose.Schema({
   avatar: {
     type: String,
     default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
-    // validate: {
-    //   validator: function(v) {
-    //     return /^(https?:\/\/)?([\da-z\.-]+)\.([\da-z\.]{2,6})([\/\d\w \.-]*)*\/?$/i.test(v);
-    //   },
-    //   message: props => `${props.value} Некорректный адрес ссылки`
-    // },
-    // required: true,
+    validate: {
+      validator: function(v) {
+        return /^(https?:\/\/)?([\da-z\.-]+)\.([\da-z\.]{2,6})([\/\d\w \.-]*)*\/?$/i.test(v);
+      },
+      message: props => `${props.value} Некорректный адрес ссылки`
+    },
+    required: true,
   },
   email: {
     type: String,
-    // required: true,
+    required: true,
     unique: true,
   },
   password: {
