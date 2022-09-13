@@ -66,10 +66,10 @@ app.use('/signout', logout);
 
 app.use('/cards', routerCard);
 
-app.use(errorLogger);
-
-app.use(errors()); // обработка ошибок сгенерированных Joi
+app.use(errorLogger); // запись ошибок в лог
 app.use(errorsCheck);
+app.use(errors()); // обработка ошибок сгенерированных Joi
+//app.use(errorsCheck);
 
 app.listen(PORT, () => {
   // console.log(`App listening on port ${PORT}`);

@@ -1,26 +1,31 @@
 const Card = require('../models/card'); // работа с БД модели Card
-const ForbiddenError = require('../errors/forbiddenError');
+// блок ошибок
+const DataError = require('../errors/dataError');
+const ForbiddenError = require('../errors/ForbiddenError');
+const NotFoundError = require('../errors/NotFoundError');
 
-module.exports.getAllCards = (req, res) => {
+module.exports.getAllCards = (req, res, next) => {
   Card.find({})
     .then((dataFromDB) => res.send(dataFromDB))
-    .catch((err) => res.status(500).send({ message: `Произошла ошибка: ${err}` }));
+    .catch((err) => next(err))
+    .catch(next);
 };
 
-module.exports.addCard = (req, res) => {
+module.exports.addCard = (req, res, next) => {
   const { name, link } = req.body;
   const owner = req.user._id;
   Card.create({ name, link, owner })
     .then((dataFromDB) => res.send(dataFromDB))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        return res.status(400).send({ message: `Произошла ошибка: ${err}` });
+        next(new DataError('Введите корректные данные'));
+      } else {
+        next(err);
       }
-      return res.status(500).send({ message: `Произошла ошибка: ${err}` });
     });
 };
 
-module.exports.deleteCard = (req, res) => {
+module.exports.deleteCard = (req, res, next) => {
   Card.findById(req.params.id)
     .then((card) => {
       if (!(card.owner._id.toString() === req.user._id)) {
@@ -29,12 +34,17 @@ module.exports.deleteCard = (req, res) => {
       }
       Card.findByIdAndDelete(req.params.id)
         .then((cardDeleted) => res.status(200).send({ message: `Карточка ${cardDeleted.name} удалена` }))
-        .catch((err) => res.status(500).send({ message: `Ошибка ${err}` }));
     })
-    .catch((err) => res.status(err.statusCode).send({ err }));
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(new DataError('Введите корректные данные'));
+      } else {
+        next(err);
+      }
+    });
 };
 
-module.exports.addLike = (req, res) => {
+module.exports.addLike = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $addToSet: { likes: req.user._id } },
@@ -45,21 +55,20 @@ module.exports.addLike = (req, res) => {
   )
     .then((dataFromBD) => {
       if (!dataFromBD) {
-        return res.status(404).send({ message: 'Произошла ошибка: Карточка не найдена' });
+        throw new NotFoundError('Карточка с указанным id не найдена');
       }
       return res.status(200).send(dataFromBD);
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        return res.status(400).send({ message: `Произошла ошибка: ${err}` });
-      } if (err.name === 'CastError') {
-        return res.status(400).send({ message: `Произошла ошибка: ${err}` });
+      if (err.name === 'CastError') {
+        next(new DataError('Переданы некорректные данные'));
+      } else {
+        next(err);
       }
-      return res.status(500).send({ message: `Произошла ошибка: ${err}` });
     });
 };
 
-module.exports.deleteLike = (req, res) => {
+module.exports.deleteLike = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params.cardId,
     { $pull: { likes: req.user._id } },
@@ -67,16 +76,15 @@ module.exports.deleteLike = (req, res) => {
   )
     .then((dataFromBD) => {
       if (!dataFromBD) {
-        return res.status(404).send({ message: 'Произошла ошибка: Карточка не найдена' });
+        throw new NotFoundError('Карточка с указанным id не найдена');
       }
       return res.status(200).send(dataFromBD);
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
-        return res.status(400).send({ message: `Произошла ошибка: ${err}` });
-      } if (err.name === 'CastError') {
-        return res.status(400).send({ message: `Произошла ошибка: ${err}` });
+      if (err.name === 'CastError') {
+        next(new DataError('Переданы некорректные данные'));
+      } else {
+        next(err);
       }
-      return res.status(500).send({ message: `Произошла ошибка: ${err}` });
     });
 };

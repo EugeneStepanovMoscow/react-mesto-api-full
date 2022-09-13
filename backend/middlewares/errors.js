@@ -1,3 +1,4 @@
 module.exports.errorsCheck = (err, req, res) => {
-  res.status(505).send({ message: 'тестовая ошибка' });
+  const { statusCode = 500, message } = err;
+  return res.status(statusCode).send({ message: statusCode === 500 ? 'На сервере произошла ошибка' : message });
 };
