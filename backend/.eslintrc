@@ -8,6 +8,11 @@
     "airbnb-base"
   ],
   "rules": {
-    "no-underscore-dangle": ["error",{"allow":["_id"]}]
+    "no-underscore-dangle": ["error",{"allow":["_id"]}],
+    "no-control-regex": 0,
+    "no-unused-vars": 0,
+    // выдавал ошибки по регулярному выражению \. и \/ 
+    "no-useless-escape": 0
+
   }
 }

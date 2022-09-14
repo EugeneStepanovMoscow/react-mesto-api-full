@@ -1,33 +1,43 @@
 const bcrypt = require('bcrypt'); // подключение шифровальщика
 const jwt = require('jsonwebtoken');
+// При переносе подключения в app перестает работать обращение к env
+// в следствии чего останавливается сервер при создании нового пользователя
+const dotenv = require('dotenv').config();
+
 const User = require('../models/user'); // работа с БД модели User
 // блок ошибок
 const ConflictError = require('../errors/conflictError');
 const DataError = require('../errors/dataError');
-const NotFoundError = require('../errors/NotFoundError');
-const UnauthorizedError = require('../errors/UnauthorizedError');
+const NotFoundError = require('../errors/notFoundError');
+const UnauthorizedError = require('../errors/unauthorizedError');
 
-const dotenv = require('dotenv').config();
+// При переносе подключения в app перестает работать обращение к env
+// в следствии чего останавливается сервер при создании нового пользователя
+
 const { JWT_SECRET } = process.env;
 const jwtLifeTime = '1d';
 
 // создание нового пользователя
 module.exports.createUser = (req, res, next) => {
-  const { email, password } = req.body;
-    bcrypt.hash(password, 10)
-      .then((hash) => {
-        User.create({ email, password: hash }) // в базу записывается хеш
-          .then((dataFromDB) => res.status(201).send({ message: `Пользователи с email: ${dataFromDB.email} создан` }))
-          .catch((err) => {
-            if (err.name === 'ValidationError') {
-              next(new DataError('Введите корректные данные'));
-            } else if (err.code === 11000) {
-              next(new ConflictError('Пользователь с таким Email уже существует'));
-            } else {
-              next(err);
-            }
-          });
-      });
+  const {
+    email, password, name, about, avatar,
+  } = req.body;
+  bcrypt.hash(password, 10)
+    .then((hash) => {
+      User.create({
+        email, password: hash, name, about, avatar,
+      }) // в базу записывается хеш
+        .then((dataFromDB) => res.status(201).send({ message: `Пользователи с email: ${dataFromDB.email} создан` }))
+        .catch((err) => {
+          if (err.name === 'ValidationError') {
+            next(new DataError('Введите корректные данные'));
+          } else if (err.code === 11000) {
+            next(new ConflictError('Пользователь с таким Email уже существует'));
+          } else {
+            next(err);
+          }
+        });
+    });
 };
 
 module.exports.login = (req, res, next) => {
@@ -42,10 +52,7 @@ module.exports.login = (req, res, next) => {
           throw new UnauthorizedError('Неверный email или пароль');
         }
         const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: jwtLifeTime });
-        // return res.send({token});
-        // return res.cookie('access_token', token, { httpOnly: true, sameSite: true });
         return res.status(200).send({ token });
-        //return res.cookie('access_token', token, { httpOnly: false }).status(200).send({ message: 'token передан' }); // отправка токена в куки
       });
     })
     .catch(next);
@@ -57,27 +64,27 @@ module.exports.findUser = (req, res, next) => {
   User.findById(req.params.id)
     .then((userFromBD) => {
       if (!userFromBD) {
-        throw new NotFoundError('Пользователь по указанному id не найден')
+        throw new NotFoundError('Пользователь по указанному id не найден');
       }
       return res.send(userFromBD);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new DataError('Введите корректные данные'))
+        next(new DataError('Введите корректные данные'));
       } else {
-        next(err)
+        next(err);
       }
     });
 };
 
-module.exports.getAllUsers = (req, res) => {
+module.exports.getAllUsers = (req, res, next) => {
   User.find({})
     .then((dataFromDB) => res.status(200).send(dataFromDB))
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new DataError('Введите корректные данные'))
+        next(new DataError('Введите корректные данные'));
       } else {
-        next(err)
+        next(err);
       }
     });
 };

@@ -3,12 +3,12 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { celebrate, Joi, errors } = require('celebrate');
 const corsUnit = require('cors');
+const cookieParser = require('cookie-parser');
 const routerUser = require('./routes/user');
 const routerCard = require('./routes/card');
 const { createUser, login, logout } = require('./controllers/users');
 const { authCheck } = require('./middlewares/auth');
 const { errorsCheck } = require('./middlewares/errors');
-const cookieParser = require('cookie-parser');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000 } = process.env; // присваиваем номер порта из окружения или 3000 по умолчанию
@@ -67,10 +67,10 @@ app.use('/signout', logout);
 app.use('/cards', routerCard);
 
 app.use(errorLogger); // запись ошибок в лог
-app.use(errorsCheck);
+
 app.use(errors()); // обработка ошибок сгенерированных Joi
-//app.use(errorsCheck);
+
+app.use(errorsCheck);
 
 app.listen(PORT, () => {
-  // console.log(`App listening on port ${PORT}`);
 });
