@@ -1,8 +1,5 @@
 const bcrypt = require('bcrypt'); // подключение шифровальщика
 const jwt = require('jsonwebtoken');
-// При переносе подключения в app перестает работать обращение к env
-// в следствии чего останавливается сервер при создании нового пользователя
-const dotenv = require('dotenv').config();
 
 const User = require('../models/user'); // работа с БД модели User
 // блок ошибок
@@ -30,7 +27,7 @@ module.exports.createUser = (req, res, next) => {
         .then((dataFromDB) => res.status(201).send({ message: `Пользователи с email: ${dataFromDB.email} создан` }))
         .catch((err) => {
           if (err.name === 'ValidationError') {
-            next(new DataError('Введите корректные данные'));
+            next(new DataError(`${err}Введите корректные данные`));
           } else if (err.code === 11000) {
             next(new ConflictError('Пользователь с таким Email уже существует'));
           } else {

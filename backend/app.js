@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express'); // подключаем экспресс
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -15,13 +16,8 @@ const { PORT = 3000 } = process.env; // присваиваем номер пор
 
 const urlPattern = /^(https?:\/\/)?([\da-z\.-]+)\.([\da-z\.]{2,6})([\/\d\w \.-]*)*\/?$/i;
 
-// подключаемся к серверу базы
-// !!!!!!При включении параметров useCreateIndex и useFindAndModify выдает ошибку!!!!!!
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
-  // useCreateIndex: true
-  // useFindAndModify: truenpm run dev
-
 });
 
 const app = express();
@@ -55,7 +51,7 @@ app.use('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(2).max(30),
-  }),
+  }).unknown(true),
 }), login);
 
 app.use(authCheck); // проверка авторизации;

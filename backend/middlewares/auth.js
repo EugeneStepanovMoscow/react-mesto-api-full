@@ -1,7 +1,5 @@
 const jwt = require('jsonwebtoken');
 const UnauthorizedError = require('../errors/unauthorizedError');
-// при переносе в app перестает работать сервер
-require('dotenv').config();
 
 const { JWT_SECRET } = process.env;
 

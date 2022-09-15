@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const validator = require('validator')
 
 // схема пользователя в базе
 const userSchema = new mongoose.Schema({
@@ -28,10 +29,10 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     validate: {
-      validator() {
-        return /^[A-Z0-9._%+-]+@[A-Z0-9-]+.+.[A-Z]{2,4}$/i;
+      validator(v) {
+        return validator.isEmail(v);
       },
-      message: (props) => `${props.value} Некорректно указан Email`,
+      message: `Некорректно указан Email (через схему)`,
     },
     required: true,
     unique: true,
